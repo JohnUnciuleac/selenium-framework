@@ -14,7 +14,7 @@ import utils.BrowserHelper;
 
 import java.time.Duration;
 
-public class QuickTest {
+public class LoginTests {
 
     private final BrowserHelper browserHelper = new BrowserHelper();
     private WebDriver driver;
