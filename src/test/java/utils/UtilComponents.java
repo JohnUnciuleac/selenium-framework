@@ -31,11 +31,7 @@ public class UtilComponents {
         return elementToBeInvisible;
     }
 
-<<<<<<< HEAD
-    public void waitForConfirmationLoadingToDisappear(WebElement toastElement, WebElement loadingAnimation) {
-=======
     public void waitForConfirmationLoadingToDisappear(WebElement toastElement, WebElement loadingAnimation){
->>>>>>> c8b3c6d1eb45b2ed5a95810a96615d8532af57ee
         waitForElementToBeInvisible(toastElement);
         waitForElementToBeInvisible(loadingAnimation);
     }
@@ -58,8 +54,6 @@ public class UtilComponents {
         Select dropdownOptions = new Select(optionElement);
         dropdownOptions.selectByVisibleText(optionText);
     }
-
-<<<<<<< HEAD
     public WebElement findChild(WebElement parent, String cssSelector) {
         return parent.findElement(By.cssSelector(cssSelector));
     }
@@ -74,8 +68,6 @@ public class UtilComponents {
         }
     }
 
-=======
->>>>>>> c8b3c6d1eb45b2ed5a95810a96615d8532af57ee
     public void addToCart(List<WebElement> productElement, String productName, By productText, By productButton) {
         wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
         wait.until(ExpectedConditions.visibilityOfAllElements(productElement));
@@ -95,10 +87,6 @@ public class UtilComponents {
         }
     }
 
-<<<<<<< HEAD
-=======
-
     public void goToPage() {
     }
->>>>>>> c8b3c6d1eb45b2ed5a95810a96615d8532af57ee
 }
