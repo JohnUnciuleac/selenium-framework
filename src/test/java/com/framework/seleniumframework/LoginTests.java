@@ -2,37 +2,34 @@ package com.framework.seleniumframework;
 
 import PageModels.LoginPage;
 import PageModels.ProductsPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.UtilComponents;
 import utils.BrowserHelper;
 
-import java.time.Duration;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class LoginTests {
-
     private final BrowserHelper browserHelper = new BrowserHelper();
     private WebDriver driver;
-    private WebDriverWait wait;
     private LoginPage loginPage;
     private ProductsPage productsPage;
+    private UtilComponents utilComponents;
 
     @BeforeMethod
     void beforeMethod() {
+
         driver = browserHelper.getChromeDriver();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        loginPage = PageFactory.initElements(driver, LoginPage.class);
         productsPage = PageFactory.initElements(driver, ProductsPage.class);
+        loginPage = PageFactory.initElements(driver,LoginPage.class);
+        utilComponents = new UtilComponents(driver);
 
-        driver.get("https://rahulshettyacademy.com/client");
+        loginPage.goToLoginPage();
     }
 
     @AfterMethod
@@ -41,17 +38,21 @@ public class LoginTests {
     }
 
     @Test
-    void shouldBeAbleToAddProductsIntoCart() throws InterruptedException {
-
+    void shouldBeAbleToLogin() {
         loginPage.loginApplication("iunc@gmail.com", "123Test456!");
+        assertThat(utilComponents.waitForElementToBeVisible(productsPage.toastContainer).getText(), equalTo("Login Successfully"));
+    }
 
-        for (WebElement product : productsPage.productsCard) {
-            if (product.findElement(By.cssSelector("b")).getText().equals("IPHONE 13 PRO")) {
-                product.findElement(By.cssSelector("button:last-of-type")).click();
-            }
-        }
+    @Test
+    void shouldNotBeAbleToLoginUsingWrongEmail() {
+        loginPage.loginApplication("unregistered", "123Test456!");
+        assertThat(utilComponents.waitForElementToBeVisible(loginPage.invalidEmailText).getText(), equalTo("*Enter Valid Email"));
+    }
 
-        Thread.sleep(5000);
+    @Test
+    void shouldNotBeAbleToLoginUsingWrongPassword() {
+        loginPage.loginApplication("iunc@gmail.com", "wrong password");
+        assertThat(utilComponents.waitForElementToBeVisible(productsPage.toastContainer).getText(), equalTo("Incorrect email or password."));
     }
 
 }
